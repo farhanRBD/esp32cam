@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ESP8266 Live Viewer</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin-top: 20px;
+    }
+    img {
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>ESP32Cam</h2>
+  <img id="cameraImage" src="" alt="Waiting for image...">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database-compat.js"></script>
+
+  <script>
+    // Konfigurasi Firebase
+    const firebaseConfig = {
+      apiKey: "8gJywTCxolIb4CBg5ZVElFyki3GCp5AdhBv11F7A",
+      authDomain: "line-follower-1553f.firebaseapp.com",
+      databaseURL: "https://line-follower-1553f-default-rtdb.firebaseio.com",
+      projectId: "line-follower-1553f"
+    };
+
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Ambil elemen img
+    const imgEl = document.getElementById("cameraImage");
+
+    // Dengarkan perubahan di path base64
+    db.ref("/line_follower/camera/base64").on("value", (snapshot) => {
+      const base64Data = snapshot.val();
+      if (base64Data) {
+        imgEl.src = base64Data;
+      }
+    });
+  </script>
+</body>
+</html>
