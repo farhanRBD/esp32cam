@@ -47,7 +47,7 @@
     const imgEl = document.getElementById("cameraImage");
 
     // Dengarkan perubahan di path base64
-    db.ref("/line_follower/camera/base64").on("value", (snapshot) => {
+    db.ref("/base64data").on("value", (snapshot) => {
       const base64Data = snapshot.val();
       if (base64Data) {
         imgEl.src = base64Data;
@@ -56,6 +56,7 @@
   </script>
 </body>
 </html>
+
 
 
 
