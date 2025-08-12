@@ -1,34 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>ESP8266 Live Viewer</title>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-      margin-top: 20px;
-    }
-    img {
-      width: 100%;
-      max-width: 360px;
-      height: auto;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-    }
-  </style>
+  <title>Realtime Base64 Image</title>
 </head>
 <body>
-  <h2>ESP32Cam</h2>
-  <img id="cameraImage" src="" alt="gaenek gambare...">
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database-compat.js"></script>
-
+  <h2>Gambar Realtime dari Base64</h2>
+  <img id="myImage" style="width:300px; height:auto;" alt="Realtime Image" />
+  
+  <!-- Tambahkan library Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  
   <script>
-    // Konfigurasi Firebase
-     const firebaseConfig = {
+    // Ganti dengan konfigurasi dari Firebase Console Anda
+   const firebaseConfig = {
   apiKey: "AIzaSyAjm2n7etfPAHu4w_r6sl7Chid08RuTP5Q",
   authDomain: "line-follower-1553f.firebaseapp.com",
   databaseURL: "https://line-follower-1553f-default-rtdb.firebaseio.com",
@@ -37,27 +22,24 @@
   messagingSenderId: "124559793006",
   appId: "1:124559793006:web:7ef329cd0d3fee95cd7f7f",
   measurementId: "G-8290KF4C5W"
-  };;
+  };
 
     // Inisialisasi Firebase
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    
+    // Referensi ke path base64data di realtime database
+    const dbRef = firebase.database().ref('base64data');
 
-    // Ambil elemen img
-    const imgEl = document.getElementById("cameraImage");
+    // Elemen img untuk menampilkan gambar
+    const imgElement = document.getElementById('myImage');
 
-    // Dengarkan perubahan di path base64
-    db.ref("/base64data").on("value", (snapshot) => {
-      const base64Data = snapshot.val();
+    // Mendengarkan perubahan secara realtime
+    dbRef.on('value', (snapshot) => {
+      const base64Data = snapshot.val(); // Terima data base64 string
       if (base64Data) {
-        imgEl.src = base64Data;
+        imgElement.src = `data:image/png;base64,${base64Data}`; // Update gambar
       }
     });
   </script>
 </body>
 </html>
-
-
-
-
-
